@@ -1,16 +1,16 @@
 // MongoDB setup
-const { MongoClient } = require('mongodb');
-const mongoUri = process.env.MONGO_URI || '';
-let db;
-if (mongoUri) {
-  MongoClient.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(client => {
-      db = client.db();
-      console.log('Connected to MongoDB');
-    })
-    .catch(err => console.error('MongoDB connection error:', err));
-}
+const mongoose = require('mongoose');
+const User = require('./models/User');
 require('dotenv').config();
+const mongoUri = process.env.MONGO_URI || '';
+if (mongoUri) {
+  mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => {
+      console.log('Connected to MongoDB with Mongoose');
+    })
+    .catch(err => console.error('Mongoose connection error:', err));
+}
+
 const express = require('express');
 const cors = require('cors');
 const session = require('express-session');
@@ -50,10 +50,24 @@ passport.serializeUser((user, done) => done(null, user));
 passport.deserializeUser((obj, done) => done(null, obj));
 
 app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
-app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/' }), (req, res) => {
+app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/' }), async (req, res) => {
+  // Store user info using Mongoose User model (upsert)
+  const googleId = req.user.id;
+  const email = req.user.emails?.[0]?.value || '';
+  const name = req.user.displayName || '';
+  try {
+    const user = await User.findOneAndUpdate(
+      { googleId },
+      { name, email },
+      { upsert: true, new: true, setDefaultsOnInsert: true }
+    );
+    console.log(`Upserted user: ${user.googleId} (${user.email}, ${user.name})`);
+  } catch (err) {
+    console.error('Mongoose user upsert error:', err);
+  }
   // Issue a JWT for the logged-in user
   const token = jwt.sign(
-    { id: req.user.id, email: req.user.emails?.[0]?.value },
+    { id: googleId, email, name },
     process.env.JWT_SECRET || 'dev_jwt_secret',
     { expiresIn: '7d' }
   );

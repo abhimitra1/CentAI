@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap-icons/font/bootstrap-icons.css';
-import Sidebar from './Sidebar';
-import ChatWindow from './ChatWindow';
-import ChatInput from './ChatInput';
+  import React, { useState, useEffect } from 'react';
+  import axios from 'axios';
+  import 'bootstrap/dist/css/bootstrap.min.css';
+  import 'bootstrap-icons/font/bootstrap-icons.css';
+  import Sidebar from './Sidebar';
+  import ChatWindow from './ChatWindow';
+  import ChatInput from './ChatInput';
 
 const sidebarLinks = [
   { name: 'Departments', info: 'Explore all academic departments.' },
@@ -16,6 +16,11 @@ const sidebarLinks = [
 ];
 
 function App() {
+  const handleLogout = () => {
+    localStorage.removeItem('centai_token');
+    delete axios.defaults.headers.common['Authorization'];
+    setUser(null);
+  };
   const [user, setUser] = useState(null);
   const SYSTEM_PROMPT = `You are CentAI, the official Centurion University onboarding assistant. Only answer questions in the context of Centurion University of Technology and Management (CUTM), its departments, teachers, buildings, hostels, clubs, and student life. Do not provide information about other universities or general topics unless they relate to Centurion University.`;
 
@@ -113,17 +118,24 @@ function App() {
   }, []);
 
   return (
-    <div className="d-flex" style={{ height: '100vh', background: '#181a20' }}>
+    <div className="d-flex" style={{ height: '100vh', background: '#181a20', position: 'relative' }}>
       <Sidebar />
+      {/* Top-right button container */}
+      <div style={{ position: 'absolute', top: 24, right: 32, zIndex: 10 }}>
+        {user ? (
+          <button onClick={handleLogout} className="btn btn-outline-light" style={{ fontSize: 16 }}>
+            <i className="bi bi-box-arrow-right me-2"></i>Logout
+          </button>
+        ) : (
+          <button onClick={handleLogin} className="btn btn-primary" style={{ fontSize: 16 }}>
+            <i className="bi bi-google me-2"></i>Login with Google
+          </button>
+        )}
+      </div>
       <div className="flex-grow-1 d-flex flex-column align-items-center justify-content-end" style={{ background: '#181a20' }}>
         <ChatWindow messages={writing ? [...messages, { role: 'assistant', content: writingText }] : messages} />
         {user && (
           <ChatInput input={input} setInput={setInput} sendMessage={sendMessage} loading={loading || writing} />
-        )}
-        {!user && (
-          <button onClick={handleLogin} className="btn btn-primary mb-4" style={{ fontSize: 16, margin: '0 auto 32px' }}>
-            <i className="bi bi-google me-2"></i>Login with Google
-          </button>
         )}
       </div>
     </div>
