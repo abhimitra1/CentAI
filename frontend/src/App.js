@@ -3,9 +3,9 @@
   import axios from 'axios';
   import 'bootstrap/dist/css/bootstrap.min.css';
   import 'bootstrap-icons/font/bootstrap-icons.css';
-  import Sidebar from './Sidebar';
-  import ChatWindow from './ChatWindow';
-  import ChatInput from './ChatInput';
+  import Sidebar from './components/Sidebar';
+  import ChatWindow from './components/ChatWindow';
+  import ChatInput from './components/ChatInput';
 
 const sidebarLinks = [
   { name: 'Departments', info: 'Explore all academic departments.' },

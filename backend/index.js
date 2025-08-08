@@ -12,6 +12,8 @@ if (mongoUri) {
 }
 
 const express = require('express');
+const fs = require('fs');
+const path = require('path');
 const cors = require('cors');
 const session = require('express-session');
 const passport = require('passport');
@@ -20,6 +22,15 @@ const OpenAI = require('openai');
 const jwt = require('jsonwebtoken');
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+
+// Load dummy.json data for context
+let dummyData = {};
+try {
+  const dummyPath = path.join(__dirname, 'data', 'dummy.json');
+  dummyData = JSON.parse(fs.readFileSync(dummyPath, 'utf8'));
+} catch (err) {
+  console.error('Failed to load dummy.json:', err);
+}
 
 const app = express();
 // CORS must be before session and routes
@@ -98,8 +109,32 @@ app.post('/api/chat', withJwt, async (req, res) => {
   }
   try {
     const { message } = req.body;
-    const SYSTEM_PROMPT =
-      'You are CentAI, the official Centurion University onboarding assistant. Only answer questions in the context of Centurion University of Technology and Management (CUTM), its departments, teachers, buildings, hostels, clubs, and student life. Do not provide information about other universities or general topics unless they relate to Centurion University. Keep your answers short and crisp.';
+    // Build system prompt with dummy.json data
+    let SYSTEM_PROMPT = (dummyData.system_prompt || '') + '\n';
+    SYSTEM_PROMPT += '\nI have details about departments, teachers, buildings, hostels, and clubs at Centurion University. If you would like to know more about any of these, just ask! After answering your question, I will offer to share more details if you are interested.';
+
+    // Add structured info for OpenAI context
+    SYSTEM_PROMPT += '\n\nDepartments:\n';
+    dummyData.departments?.forEach(dep => {
+      SYSTEM_PROMPT += `- ${dep.name} (HOD: ${dep.hod}, Email: ${dep.email}, Phone: ${dep.phone})\n`;
+    });
+    SYSTEM_PROMPT += '\nTeachers:\n';
+    dummyData.teachers?.forEach(teacher => {
+      SYSTEM_PROMPT += `- ${teacher.name} (${teacher.department}, Email: ${teacher.email}, Phone: ${teacher.phone})\n`;
+    });
+    SYSTEM_PROMPT += '\nBuildings:\n';
+    dummyData.buildings?.forEach(bldg => {
+      SYSTEM_PROMPT += `- ${bldg.name} (Location: ${bldg.location}, Departments: ${bldg.departments?.join(', ')})\n`;
+    });
+    SYSTEM_PROMPT += '\nHostels:\n';
+    dummyData.hostels?.forEach(hostel => {
+      SYSTEM_PROMPT += `- ${hostel.name} (Warden: ${hostel.warden}, Phone: ${hostel.phone}, Email: ${hostel.email}, Capacity: ${hostel.capacity})\n`;
+    });
+    SYSTEM_PROMPT += '\nClubs:\n';
+    dummyData.clubs?.forEach(club => {
+      SYSTEM_PROMPT += `- ${club.name} (${club.category}, Coordinator: ${club.faculty_coordinator}, Contact: ${club.contact}, Email: ${club.email})\n`;
+    });
+
     const messages = [
       { role: 'system', content: SYSTEM_PROMPT },
       { role: 'user', content: message }
@@ -112,15 +147,7 @@ app.post('/api/chat', withJwt, async (req, res) => {
     });
     let reply = completion.choices[0].message.content;
     if (reply.length > 300) reply = reply.slice(0, 300) + '...';
-    // Save chat to MongoDB
-    if (db && req.user && req.user.id) {
-      await db.collection('chats').insertOne({
-        userId: req.user.id,
-        timestamp: new Date(),
-        question: message,
-        answer: reply
-      });
-    }
+  // ...existing code...
   console.log('OpenAI response:', reply);
     res.json({ reply });
   } catch (err) {

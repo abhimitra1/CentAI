@@ -1,0 +1,104 @@
+{
+  "system_prompt": "You are CentAI, the official Centurion University onboarding assistant. Only answer questions in the context of Centurion University of Technology and Management (CUTM), its departments, teachers, buildings, hostels, clubs, and student life. Do not provide information about other universities or general topics unless they relate to Centurion University. Keep your answers short and crisp.",
+
+  "departments": [
+    {
+      "name": "Computer Science and Engineering",
+      "hod": "Dr. Anjali Rao",
+      "email": "anjali.rao@cutm.ac.in",
+      "phone": "+91-9876543210"
+    },
+    {
+      "name": "Mechanical Engineering",
+      "hod": "Dr. Rakesh Nanda",
+      "email": "rakesh.nanda@cutm.ac.in",
+      "phone": "+91-9876501234"
+    },
+    {
+      "name": "Agricultural Sciences",
+      "hod": "Dr. Meenakshi Sethi",
+      "email": "meenakshi.sethi@cutm.ac.in",
+      "phone": "+91-9988776655"
+    }
+  ],
+
+  "teachers": [
+    {
+      "name": "Prof. Neha Patil",
+      "department": "Computer Science and Engineering",
+      "email": "neha.patil@cutm.ac.in",
+      "phone": "+91-9876123456"
+    },
+    {
+      "name": "Dr. Amitabha Das",
+      "department": "Mechanical Engineering",
+      "email": "amitabha.das@cutm.ac.in",
+      "phone": "+91-9812345678"
+    },
+    {
+      "name": "Ms. Priyanka Mohanty",
+      "department": "Agricultural Sciences",
+      "email": "priyanka.mohanty@cutm.ac.in",
+      "phone": "+91-9090909090"
+    }
+  ],
+
+  "buildings": [
+    {
+      "name": "Academic Block A",
+      "location": "Near Main Gate",
+      "departments": ["Computer Science and Engineering", "Mathematics"]
+    },
+    {
+      "name": "Innovation Lab",
+      "location": "Next to Central Library",
+      "departments": ["AI/ML", "Blockchain", "AR-VR"]
+    },
+    {
+      "name": "Mechanical Workshop",
+      "location": "South Campus Zone",
+      "departments": ["Mechanical Engineering"]
+    }
+  ],
+
+  "hostels": [
+    {
+      "name": "Nalanda Boys Hostel",
+      "warden": "Mr. Sudhanshu Reddy",
+      "phone": "+91-9988771122",
+      "email": "nalanda.hostel@cutm.ac.in",
+      "capacity": 300
+    },
+    {
+      "name": "Kasturba Girls Hostel",
+      "warden": "Mrs. Swati Das",
+      "phone": "+91-8877665544",
+      "email": "kasturba.hostel@cutm.ac.in",
+      "capacity": 250
+    }
+  ],
+
+  "clubs": [
+    {
+      "name": "Tech Titans",
+      "category": "Coding and Hackathons",
+      "faculty_coordinator": "Mr. Arvind Jha",
+      "contact": "+91-9123456780",
+      "email": "techtitans@cutm.ac.in"
+    },
+    {
+      "name": "Kalakruti",
+      "category": "Arts and Culture",
+      "faculty_coordinator": "Ms. Sneha Bhattacharya",
+      "contact": "+91-9876123488",
+      "email": "kalakruti@cutm.ac.in"
+    },
+    {
+      "name": "Green Warriors",
+      "category": "Environment & Sustainability",
+      "faculty_coordinator": "Dr. Vikram Singh",
+      "contact": "+91-9810112233",
+      "email": "greenwarriors@cutm.ac.in"
+    }
+  ]
+}
