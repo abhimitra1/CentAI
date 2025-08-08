@@ -1,11 +1,9 @@
 
   import React, { useState, useEffect } from 'react';
+  import logo from './images/CentAI_logo_light.png';
   import axios from 'axios';
   import 'bootstrap/dist/css/bootstrap.min.css';
   import 'bootstrap-icons/font/bootstrap-icons.css';
-  import Sidebar from './components/Sidebar';
-  import ChatWindow from './components/ChatWindow';
-  import ChatInput from './components/ChatInput';
 
 const sidebarLinks = [
   { name: 'Departments', info: 'Explore all academic departments.' },
@@ -118,26 +116,64 @@ function App() {
   }, []);
 
   return (
-    <div className="d-flex" style={{ height: '100vh', background: '#181a20', position: 'relative' }}>
-      <Sidebar />
-      {/* Top-right button container */}
-      <div style={{ position: 'absolute', top: 24, right: 32, zIndex: 10 }}>
+    <div style={{ minHeight: '100vh', background: '#181a20', display: 'flex', flexDirection: 'column' }}>
+  <header style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1rem 2rem', background: '#222', boxShadow: '0 2px 8px #111', position: 'sticky', top: 0, zIndex: 20 }}>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <img src={logo} alt="CentAI Logo" style={{ height: 40, marginRight: 12 }} />
+          <span style={{ fontWeight: 700, fontSize: 22, color: '#fff' }}></span>
+        </div>
         {user ? (
           <button onClick={handleLogout} className="btn btn-outline-light" style={{ fontSize: 16 }}>
             <i className="bi bi-box-arrow-right me-2"></i>Logout
           </button>
         ) : (
-          <button onClick={handleLogin} className="btn btn-primary" style={{ fontSize: 16 }}>
+          <button onClick={handleLogin} className="btn btn-light" style={{ fontSize: 16, color: '#222' }}>
             <i className="bi bi-google me-2"></i>Login with Google
           </button>
         )}
-      </div>
-      <div className="flex-grow-1 d-flex flex-column align-items-center justify-content-end" style={{ background: '#181a20' }}>
-        <ChatWindow messages={writing ? [...messages, { role: 'assistant', content: writingText }] : messages} />
+      </header>
+      <main style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end', width: '100%', position: 'relative' }}>
+        <div className="w-100" style={{ maxWidth: 700, margin: '32px auto 0', background: '#23272f', borderRadius: 16, boxShadow: '0 2px 16px rgba(0,0,0,0.12)', padding: 32, minHeight: 500, display: 'flex', flexDirection: 'column', gap: 16, overflowY: 'auto', flex: 1 }}>
+          <h3 className="mb-4 fw-bold text-white" style={{ fontSize: 22 }}>
+            {user?.name ? `Hi ${user.name}, Welcome to Centurion!` : 'Welcome to Centurion!'}
+          </h3>
+          <div className="flex-grow-1 d-flex flex-column" style={{ gap: 24 }}>
+            {(writing ? [...messages, { role: 'assistant', content: writingText }] : messages).map((msg, idx) => (
+              <div key={idx} className={msg.role === 'user' ? 'd-flex justify-content-end' : 'd-flex justify-content-start'} style={{ marginBottom: 12 }}>
+                <div className={msg.role === 'user' ? 'bg-secondary text-white' : 'bg-dark text-white'}
+                  style={{ borderRadius: 12, padding: '16px 22px', maxWidth: '80%', fontSize: 16, boxShadow: msg.role === 'user' ? '0 1px 4px rgba(0,0,0,0.10)' : 'none' }}>
+                  {msg.content}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
         {user && (
-          <ChatInput input={input} setInput={setInput} sendMessage={sendMessage} loading={loading || writing} />
+          <div style={{ position: 'sticky', bottom: 0, width: '100%', background: 'rgba(24,26,32,0.95)', zIndex: 10, boxShadow: '0 -2px 8px #111' }}>
+            <div className="w-100 d-flex align-items-center" style={{ maxWidth: 700, margin: '0 auto', gap: 12, padding: '12px 0' }}>
+              <input
+                type="text"
+                value={input}
+                onChange={e => setInput(e.target.value)}
+                onKeyDown={e => e.key === 'Enter' && sendMessage()}
+                placeholder="Ask me anything about Centurion University..."
+                className="form-control form-control-lg bg-dark text-white border-secondary"
+                style={{ flex: 1, borderRadius: 12 }}
+                disabled={loading || writing}
+              />
+              <button
+                onClick={sendMessage}
+                className="btn btn-success btn-lg"
+                style={{ borderRadius: 12 }}
+                disabled={loading || writing || !input.trim()}
+              >{(loading || writing) ? <i className="bi bi-arrow-repeat"></i> : <i className="bi bi-send"></i>}</button>
+            </div>
+          </div>
         )}
-      </div>
+      </main>
+      <footer style={{ width: '100%', textAlign: 'center', padding: '1rem 0', color: '#aaa', fontSize: 16, background: 'transparent', position: 'sticky', bottom: 0, zIndex: 9 }}>
+        Powered by CentAI
+      </footer>
     </div>
   );
 }
