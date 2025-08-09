@@ -139,10 +139,6 @@ function App() {
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <img src={logo} alt="CentAI Logo" className="h-10 rounded-xl shadow-sm" />
-            <div>
-              <h3 className="font-semibold text-white text-lg">CentAI</h3>
-              <p className="text-xs text-blue-400">Centurion University Assistant</p>
-            </div>
           </div>
           <div>
             {user ? (
