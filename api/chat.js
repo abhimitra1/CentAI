@@ -1,12 +1,11 @@
-const { connectToDatabase } = require('../utils/database');
+
+const OpenAI = require('openai');
 const fs = require('fs');
 const path = require('path');
-const OpenAI = require('openai');
 
-// Initialize OpenAI outside the handler
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-// Load dummy data
+// Load dummy data for context
 let dummyData = {};
 try {
   const dummyPath = path.join(process.cwd(), 'api', 'data', 'dummy.json');
@@ -16,29 +15,20 @@ try {
 }
 
 module.exports = async (req, res) => {
-  // Set CORS headers
   res.setHeader('Access-Control-Allow-Credentials', true);
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,POST');
   res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization');
 
-  // Handle OPTIONS request (preflight)
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
   }
-
-  // Only allow POST for this endpoint
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
   try {
-    // Connect to the database
-    await connectToDatabase();
-
-    // Extract the message from request body
     const { message, conversationHistory = [] } = req.body;
-
     if (!message) {
       return res.status(400).json({ error: 'Message is required' });
     }
@@ -57,10 +47,8 @@ module.exports = async (req, res) => {
       max_tokens: 1000,
       temperature: 0.7
     });
-
     const reply = completion.choices[0].message.content;
     console.log('OpenAI response:', reply);
-
     return res.status(200).json({ reply });
   } catch (error) {
     console.error('Error in chat API:', error);
