@@ -15,18 +15,42 @@ function App() {
   const chatWindowRef = React.useRef(null);
   const handleLogout = () => {
     localStorage.removeItem('centai_token');
+    localStorage.removeItem('centai_chat'); // Clear chat history on logout
     delete axios.defaults.headers.common['Authorization'];
     setUser(null);
+    setMessages([
+      {
+        role: 'system',
+        content: ''
+      }
+    ]);
   };
   const [user, setUser] = useState(null);
   const SYSTEM_PROMPT = `You are CentAI, the official Centurion University onboarding assistant. Only answer questions in the context of Centurion University, its departments, teachers, buildings, hostels, clubs, and student life. Do not provide information about other universities or general topics unless they relate to Centurion University. If the user asks for a summary, recap, or requests to complete the conversation, provide a full summary or completion of the entire chat so far.`;
 
-  const [messages, setMessages] = useState([
-    {
-      role: 'system',
-      content: '' // Remove the welcome text from the chat window
+  // Load chat from localStorage if available
+  const getInitialMessages = () => {
+    const saved = localStorage.getItem('centai_chat');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch {
+        return [
+          {
+            role: 'system',
+            content: ''
+          }
+        ];
+      }
     }
-  ]);
+    return [
+      {
+        role: 'system',
+        content: ''
+      }
+    ];
+  };
+  const [messages, setMessages] = useState(getInitialMessages());
   // Removed duplicate input and loading state declarations
   const [writing, setWriting] = useState(false);
   const [writingText, setWritingText] = useState('');
@@ -114,6 +138,11 @@ function App() {
     }
   }, [messages, writingText, writing]);
 
+  // Save chat to localStorage on every update
+  useEffect(() => {
+    localStorage.setItem('centai_chat', JSON.stringify(messages));
+  }, [messages]);
+
   // Show greeting and welcome only if no user messages yet
   const showWelcome = messages.filter(m => m.role === 'user').length === 0;
 
@@ -147,12 +176,16 @@ function App() {
             </div>
           )}
           <div ref={chatWindowRef} className="flex flex-col justify-end gap-8 flex-grow overflow-y-auto px-4 md:px-10 pb-6" style={{ height: 'calc(100vh - 120px - 90px)' }}>
-            {messages.map((msg, idx) => (
+            {messages.filter(m => m.content && m.content.trim() !== '').map((msg, idx) => (
               <div key={idx} className={msg.role === 'user' ? 'flex justify-end mb-3' : 'flex justify-start mb-3'}>
                 <div className={msg.role === 'user'
                   ? 'rounded-2xl px-6 py-4 max-w-[80%] text-lg font-medium shadow bg-gradient-to-r from-blue-500 to-blue-700 text-white border border-blue-700 break-words backdrop-blur-md'
                   : 'rounded-2xl px-6 py-4 max-w-[80%] text-lg font-normal shadow bg-gradient-to-r from-[#23272f] to-[#181a20] text-white border border-[#23272f] break-words backdrop-blur-md'}>
-                  {msg.content}
+                  {msg.role === 'assistant' ? (
+                    <span style={{ whiteSpace: 'pre-line' }}>{msg.content}</span>
+                  ) : (
+                    msg.content
+                  )}
                 </div>
               </div>
             ))}
