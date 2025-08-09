@@ -1,9 +1,7 @@
-
-  import React, { useState, useEffect } from 'react';
-  import logo from './images/CentAI_logo_light.png';
-  import axios from 'axios';
-  import 'bootstrap/dist/css/bootstrap.min.css';
-  import 'bootstrap-icons/font/bootstrap-icons.css';
+import React, { useState, useEffect } from 'react';
+import { Typewriter } from 'react-simple-typewriter';
+import logo from './images/CentAI_logo_light.png';
+import axios from 'axios';
 
 const sidebarLinks = [
   { name: 'Departments', info: 'Explore all academic departments.' },
@@ -14,19 +12,19 @@ const sidebarLinks = [
 ];
 
 function App() {
+  const chatWindowRef = React.useRef(null);
   const handleLogout = () => {
     localStorage.removeItem('centai_token');
     delete axios.defaults.headers.common['Authorization'];
     setUser(null);
   };
   const [user, setUser] = useState(null);
-  const SYSTEM_PROMPT = `You are CentAI, the official Centurion University onboarding assistant. Only answer questions in the context of Centurion University of Technology and Management (CUTM), its departments, teachers, buildings, hostels, clubs, and student life. Do not provide information about other universities or general topics unless they relate to Centurion University.`;
+  const SYSTEM_PROMPT = `You are CentAI, the official Centurion University onboarding assistant. Only answer questions in the context of Centurion University, its departments, teachers, buildings, hostels, clubs, and student life. Do not provide information about other universities or general topics unless they relate to Centurion University. If the user asks for a summary, recap, or requests to complete the conversation, provide a full summary or completion of the entire chat so far.`;
 
   const [messages, setMessages] = useState([
     {
       role: 'system',
-      content:
-        '\n\n🎓 Welcome to CentAI — your Centurion University onboarding assistant! I answer only about Centurion University: departments, teachers, hostels, clubs, and student life. For anything else, I’ll politely redirect you. Ask me anything about Centurion University!'
+      content: '' // Remove the welcome text from the chat window
     }
   ]);
   // Removed duplicate input and loading state declarations
@@ -51,8 +49,8 @@ function App() {
 
   const fetchUser = async () => {
     try {
-  setAxiosAuth();
-  const res = await axios.get('http://localhost:5001/api/user');
+      setAxiosAuth();
+      const res = await axios.get('http://localhost:5001/api/user');
       setUser(res.data);
     } catch {
       setUser(null);
@@ -71,30 +69,24 @@ function App() {
         ...messages.filter(m => m.role !== 'system'),
         { role: 'user', content: input }
       ];
-  setAxiosAuth();
-  const res = await axios.post('http://localhost:5001/api/chat', { message: input, history });
-      // Writing effect
+      setAxiosAuth();
+      const res = await axios.post('http://localhost:5001/api/chat', { message: input, history });
+      // Manual character-by-character writing effect
       setWriting(true);
-      let reply = res.data.reply || '';
-      let i = 0;
+      const reply = ' ' + (res.data.reply || '');
       setWritingText('');
+      let i = 0;
       const typeWriter = () => {
-        if (i === 0 && reply.length > 0) {
-          setWritingText(reply[0]);
-          i = 1;
-          setTimeout(typeWriter, 12);
-          return;
-        }
+        setWritingText(prev => prev + reply[i]);
+        i++;
         if (i < reply.length) {
-          setWritingText(prev => prev + reply[i]);
-          i++;
-          setTimeout(typeWriter, 12);
+          setTimeout(typeWriter, 20);
         } else {
           setWriting(false);
           setMessages(prev => [...prev, { role: 'assistant', content: reply }]);
         }
       };
-      typeWriter();
+      if (reply.length > 0) typeWriter();
     } catch (err) {
       setMessages(prev => [...prev, { role: 'assistant', content: 'Sorry, something went wrong. Please try again.' }]);
       setWriting(false);
@@ -115,63 +107,87 @@ function App() {
     fetchUser();
   }, []);
 
+  // Scroll chat window to bottom when messages or writing change
+  useEffect(() => {
+    if (chatWindowRef.current) {
+      chatWindowRef.current.scrollTop = chatWindowRef.current.scrollHeight;
+    }
+  }, [messages, writingText, writing]);
+
+  // Show greeting and welcome only if no user messages yet
+  const showWelcome = messages.filter(m => m.role === 'user').length === 0;
+
   return (
-    <div style={{ minHeight: '100vh', background: '#181a20', display: 'flex', flexDirection: 'column' }}>
-  <header style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1rem 2rem', background: '#222', boxShadow: '0 2px 8px #111', position: 'sticky', top: 0, zIndex: 20 }}>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <img src={logo} alt="CentAI Logo" style={{ height: 40, marginRight: 12 }} />
-          <span style={{ fontWeight: 700, fontSize: 22, color: '#fff' }}></span>
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-[#181a20] to-[#23272f] font-sfpro text-[17px]">
+      <header className="sticky top-0 z-20 flex items-center justify-between px-8 py-4 bg-gradient-to-r from-[#181a20] to-[#23272f] shadow-md rounded-b-2xl">
+        <div className="flex items-center">
+          <img src={logo} alt="CentAI Logo" className="h-10 mr-4 rounded-xl shadow-sm" />
         </div>
         {user ? (
-          <button onClick={handleLogout} className="btn btn-outline-light" style={{ fontSize: 16 }}>
-            <i className="bi bi-box-arrow-right me-2"></i>Logout
+          <button onClick={handleLogout} className="px-5 py-2 rounded-xl bg-[#23272f] text-white font-medium shadow hover:bg-[#2c2f36] transition border border-[#333] focus:outline-none focus:ring-2 focus:ring-blue-500" style={{ fontSize: 16 }}>
+            Logout
           </button>
         ) : (
-          <button onClick={handleLogin} className="btn btn-light" style={{ fontSize: 16, color: '#222' }}>
-            <i className="bi bi-google me-2"></i>Login with Google
+          <button onClick={handleLogin} className="px-5 py-2 rounded-xl bg-white text-gray-900 font-medium shadow hover:bg-gray-200 transition border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" style={{ fontSize: 16 }}>
+            Login with Google
           </button>
         )}
       </header>
       <main style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end', width: '100%', position: 'relative' }}>
-        <div className="w-100" style={{ maxWidth: 700, margin: '32px auto 0', background: '#23272f', borderRadius: 16, boxShadow: '0 2px 16px rgba(0,0,0,0.12)', padding: 32, minHeight: 500, display: 'flex', flexDirection: 'column', gap: 16, overflowY: 'auto', flex: 1 }}>
-          <h3 className="mb-4 fw-bold text-white" style={{ fontSize: 22 }}>
-            {user?.name ? `Hi ${user.name}, Welcome to Centurion!` : 'Welcome to Centurion!'}
-          </h3>
-          <div className="flex-grow-1 d-flex flex-column" style={{ gap: 24 }}>
-            {(writing ? [...messages, { role: 'assistant', content: writingText }] : messages).map((msg, idx) => (
-              <div key={idx} className={msg.role === 'user' ? 'd-flex justify-content-end' : 'd-flex justify-content-start'} style={{ marginBottom: 12 }}>
-                <div className={msg.role === 'user' ? 'bg-secondary text-white' : 'bg-dark text-white'}
-                  style={{ borderRadius: 12, padding: '16px 22px', maxWidth: '80%', fontSize: 16, boxShadow: msg.role === 'user' ? '0 1px 4px rgba(0,0,0,0.10)' : 'none' }}>
+        <div className="w-full h-full fixed inset-0 bg-gradient-to-br from-[#23272f] to-[#181a20] rounded-none shadow-none flex flex-col border-none z-10" style={{ minHeight: '100vh' }}>
+          {/* Centered greeting and welcome message, hidden after first user message */}
+          {showWelcome && (
+            <div className="absolute inset-0 flex flex-col items-center justify-center z-30 pointer-events-none pt-32 md:pt-40">
+              <h3 className="font-semibold text-2xl text-white tracking-tight text-center mb-6 px-4">
+                {user?.name ? `Hi ${user.name}, Welcome to Centurion!` : 'Welcome to Centurion!'}
+              </h3>
+              <div className="bg-[#181a20] rounded-2xl shadow-lg px-6 py-6 text-white text-lg font-normal text-center max-w-md mx-auto border border-[#23272f]">
+                I am CentAI— your Centurion University onboarding assistant! I answer only about Centurion University: departments, teachers, hostels, clubs, and student life. For anything else, I’ll politely redirect you. Ask me anything about Centurion University!
+              </div>
+            </div>
+          )}
+          <div ref={chatWindowRef} className="flex flex-col gap-8 flex-grow overflow-y-auto px-4 md:px-10 pb-6" style={{ height: 'calc(100vh - 120px - 90px)' }}>
+            {messages.map((msg, idx) => (
+              <div key={idx} className={msg.role === 'user' ? 'flex justify-end mb-3' : 'flex justify-start mb-3'}>
+                <div className={msg.role === 'user'
+                  ? 'rounded-2xl px-6 py-4 max-w-[80%] text-lg font-medium shadow bg-gradient-to-r from-blue-500 to-blue-700 text-white border border-blue-700 break-words backdrop-blur-md'
+                  : 'rounded-2xl px-6 py-4 max-w-[80%] text-lg font-normal shadow bg-gradient-to-r from-[#23272f] to-[#181a20] text-white border border-[#23272f] break-words backdrop-blur-md'}>
                   {msg.content}
                 </div>
               </div>
             ))}
+            {writing && (
+              <div className={'flex justify-start mb-3'}>
+                <div className='rounded-2xl px-6 py-4 max-w-[80%] text-lg font-normal shadow bg-gradient-to-r from-[#23272f] to-[#181a20] text-white border border-[#23272f] break-words backdrop-blur-md'>
+                  <span style={{ whiteSpace: 'pre-line' }}>{writingText}<span className="animate-pulse">|</span></span>
+                </div>
+              </div>
+            )}
           </div>
-        </div>
-        {user && (
-          <div style={{ position: 'sticky', bottom: 0, width: '100%', background: 'rgba(24,26,32,0.95)', zIndex: 10, boxShadow: '0 -2px 8px #111' }}>
-            <div className="w-100 d-flex align-items-center" style={{ maxWidth: 700, margin: '0 auto', gap: 12, padding: '12px 0' }}>
-              <input
-                type="text"
-                value={input}
-                onChange={e => setInput(e.target.value)}
-                onKeyDown={e => e.key === 'Enter' && sendMessage()}
-                placeholder="Ask me anything about Centurion University..."
-                className="form-control form-control-lg bg-dark text-white border-secondary"
-                style={{ flex: 1, borderRadius: 12 }}
-                disabled={loading || writing}
-              />
-              <button
-                onClick={sendMessage}
-                className="btn btn-success btn-lg"
-                style={{ borderRadius: 12 }}
-                disabled={loading || writing || !input.trim()}
-              >{(loading || writing) ? <i className="bi bi-arrow-repeat"></i> : <i className="bi bi-send"></i>}</button>
+          {user && (
+            <div className="w-full px-2 md:px-10 pb-4 md:pb-6" style={{ position: 'sticky', bottom: 0, zIndex: 20 }}>
+              <div className="flex items-center gap-2 md:gap-4 bg-[#23272f] rounded-xl shadow-2xl px-3 md:px-6 py-3 md:py-4 border border-[#333]" style={{ boxShadow: '0 8px 32px 0 rgba(0,0,0,0.25)' }}>
+                <input
+                  type="text"
+                  value={input}
+                  onChange={e => setInput(e.target.value)}
+                  onKeyDown={e => e.key === 'Enter' && sendMessage()}
+                  placeholder="Ask me anything about Centurion University..."
+                  className="flex-1 rounded-xl bg-[#23272f] text-white border-none px-3 md:px-4 py-3 text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm placeholder-gray-400"
+                  disabled={loading || writing}
+                />
+                <button
+                  onClick={sendMessage}
+                  className={`rounded-xl px-4 md:px-6 py-3 text-lg font-semibold transition shadow ${loading || writing || !input.trim() ? 'bg-[#23272f] text-gray-400 cursor-not-allowed' : 'bg-blue-600 text-white hover:bg-blue-700'}`}
+                  disabled={loading || writing || !input.trim()}
+                  style={{ minWidth: '56px' }}
+                >{(loading || writing) ? <span className="animate-spin inline-block mr-2">⏳</span> : <span className="inline-block mr-2">➤</span>} Send</button>
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </main>
-      <footer style={{ width: '100%', textAlign: 'center', padding: '1rem 0', color: '#aaa', fontSize: 16, background: 'transparent', position: 'sticky', bottom: 0, zIndex: 9 }}>
+      <footer className="w-full text-center py-4 text-gray-400 text-lg bg-transparent relative font-sfpro">
         Powered by CentAI
       </footer>
     </div>

@@ -142,11 +142,10 @@ app.post('/api/chat', withJwt, async (req, res) => {
     const completion = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages,
-      max_tokens: 120,
+      max_tokens: 1000,
       temperature: 0.7
     });
     let reply = completion.choices[0].message.content;
-    if (reply.length > 300) reply = reply.slice(0, 300) + '...';
   // ...existing code...
   console.log('OpenAI response:', reply);
     res.json({ reply });
