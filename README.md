@@ -11,7 +11,7 @@ A full-stack AI chatbot project with React frontend and Node.js backend. Feature
 ### Backend
 1. Add your OpenAI API key to a `.env` file in `backend/`:
    ```env
-   OPENAI_API_KEY=your_openai_api_key_here
+   OPENAI_API_KEY=your_openai_api_key
    GOOGLE_CLIENT_ID=your_google_client_id_here
    GOOGLE_CLIENT_SECRET=your_google_client_secret_here
    SESSION_SECRET=your_session_secret_here
