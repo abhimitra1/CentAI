@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import logo from './images/CentAI_logo_light.png';
 import axios from 'axios';
 import './ChatWindow.css';
@@ -49,15 +49,19 @@ function App() {
     }
   };
 
-  const fetchUser = async () => {
+  const fetchUser = useCallback(async () => {
     try {
       setAxiosAuth();
-      const res = await axios.get('http://localhost:5001/api/user');
+      // Use relative URL in production, fallback to localhost in development
+      const apiUrl = process.env.NODE_ENV === 'production' 
+        ? '/api/user'
+        : 'http://localhost:5001/api/user';
+      const res = await axios.get(apiUrl);
       setUser(res.data);
     } catch {
       setUser(null);
     }
-  };
+  }, []);
 
   const sendMessage = async () => {
     if (!input.trim()) return;
@@ -108,7 +112,7 @@ function App() {
     }
     setAxiosAuth();
     fetchUser();
-  }, []);
+  }, [fetchUser]);
 
   // Scroll to bottom when messages change
   useEffect(() => {
