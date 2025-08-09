@@ -18,6 +18,28 @@ A full-stack AI chatbot project with React frontend and Node.js backend. Feature
    ```
 2. Run the backend server:
    ```sh
+   # Production mode (using OpenAI)
+   npm start
+
+   # Local development mode (using Ollama)
+   npm run dev
+
+   # Local development with auto-restart on changes
+   npm run dev:watch
+   ```
+
+### Development vs Production
+- **Local Development**: Uses Ollama (local LLM) for AI responses
+  - Requires [Ollama](https://ollama.com/) installed and running locally
+  - Uses `llama3.2:latest` model by default
+  - Start with `npm run dev` or `npm run dev:watch`
+
+- **Production**: Uses OpenAI for AI responses
+  - Requires valid `OPENAI_API_KEY` in environment variables
+  - Uses `gpt-3.5-turbo` model
+  - Start with `npm start` or deploy to Vercel
+  - Automatically used in Vercel deployments
+   ```sh
    cd backend
    node index.js
    ```

@@ -20,8 +20,10 @@ const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const OpenAI = require('openai');
 const jwt = require('jsonwebtoken');
+const axios = require('axios'); // Added for Ollama support
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+// Initialize OpenAI with API key if in production
+const openai = process.env.OPENAI_API_KEY ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY }) : null;
 
 // Load dummy.json data for context
 let dummyData = {};
@@ -34,8 +36,26 @@ try {
 
 const app = express();
 // CORS must be before session and routes
+// Dynamic origin based on environment
+const allowedOrigins = ['http://localhost:3000'];
+if (process.env.VERCEL_URL) {
+  allowedOrigins.push(`https://${process.env.VERCEL_URL}`);
+}
+if (process.env.FRONTEND_URL) {
+  allowedOrigins.push(process.env.FRONTEND_URL);
+}
+
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: function(origin, callback) {
+    // Allow requests with no origin (like mobile apps, curl, etc)
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.indexOf(origin) === -1) {
+      const msg = 'The CORS policy for this site does not allow access from the specified origin.';
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  },
   credentials: true,
 }));
 app.use(express.json());
@@ -49,10 +69,18 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Configure Google OAuth strategy (after imports and dotenv)
+// Determine base URL for callbacks
+let baseUrl = '';
+if (process.env.VERCEL_URL) {
+  baseUrl = `https://${process.env.VERCEL_URL}`;
+} else if (process.env.FRONTEND_URL) {
+  baseUrl = process.env.FRONTEND_URL;
+}
+
 passport.use(new GoogleStrategy({
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: '/auth/google/callback',
+  callbackURL: baseUrl ? `${baseUrl}/auth/google/callback` : '/auth/google/callback',
 }, (accessToken, refreshToken, profile, done) => {
   return done(null, profile);
 }));
@@ -82,8 +110,16 @@ app.get('/auth/google/callback', passport.authenticate('google', { failureRedire
     process.env.JWT_SECRET || 'dev_jwt_secret',
     { expiresIn: '7d' }
   );
+  // Determine frontend URL for redirection
+  let frontendUrl = 'http://localhost:3000';
+  if (process.env.FRONTEND_URL) {
+    frontendUrl = process.env.FRONTEND_URL;
+  } else if (process.env.VERCEL_URL) {
+    frontendUrl = `https://${process.env.VERCEL_URL}`;
+  }
+
   // Redirect back to frontend with token in fragment (avoids logs and referer leakage)
-  res.redirect(`http://localhost:3000/#token=${token}`);
+  res.redirect(`${frontendUrl}/#token=${token}`);
 });
 
 // Middleware to read JWT from Authorization header and attach req.user if valid
@@ -113,7 +149,7 @@ app.post('/api/chat', withJwt, async (req, res) => {
     let SYSTEM_PROMPT = (dummyData.system_prompt || '') + '\n';
     SYSTEM_PROMPT += '\nI have details about departments, teachers, buildings, hostels, and clubs at Centurion University. If you would like to know more about any of these, just ask! After answering your question, I will offer to share more details if you are interested.';
 
-    // Add structured info for OpenAI context
+    // Add structured info for context
     SYSTEM_PROMPT += '\n\nDepartments:\n';
     dummyData.departments?.forEach(dep => {
       SYSTEM_PROMPT += `- ${dep.name} (HOD: ${dep.hod}, Email: ${dep.email}, Phone: ${dep.phone})\n`;
@@ -139,15 +175,45 @@ app.post('/api/chat', withJwt, async (req, res) => {
       { role: 'system', content: SYSTEM_PROMPT },
       { role: 'user', content: message }
     ];
-    const completion = await openai.chat.completions.create({
-      model: 'gpt-3.5-turbo',
-      messages,
-      max_tokens: 1000,
-      temperature: 0.7
-    });
-    let reply = completion.choices[0].message.content;
-  // ...existing code...
-  console.log('OpenAI response:', reply);
+
+    let reply;
+
+    // Check for local development vs production
+    // NODE_ENV is typically 'production' in Vercel and undefined or 'development' locally
+    const isProduction = process.env.NODE_ENV === 'production';
+    const useOpenAI = isProduction || !process.env.USE_OLLAMA;
+
+    if (useOpenAI && openai) {
+      // Use OpenAI in production or when explicitly configured
+      console.log('Using OpenAI API...');
+      const completion = await openai.chat.completions.create({
+        model: 'gpt-3.5-turbo',
+        messages,
+        max_tokens: 1000,
+        temperature: 0.7
+      });
+      reply = completion.choices[0].message.content;
+      console.log('OpenAI response:', reply);
+    } else {
+      // Use Ollama for local development when available
+      console.log('Using local Ollama API...');
+      try {
+        const ollamaPayload = {
+          model: 'llama3.2:latest',
+          messages,
+          stream: false
+        };
+        const ollamaRes = await axios.post('http://127.0.0.1:11434/api/chat', ollamaPayload, {
+          headers: { 'Content-Type': 'application/json' }
+        });
+        reply = ollamaRes.data.message.content;
+        console.log('Ollama response:', reply);
+      } catch (ollamaErr) {
+        console.error('Ollama error:', ollamaErr.message);
+        return res.status(500).json({ error: 'Ollama service unavailable', details: ollamaErr.message });
+      }
+    }
+
     res.json({ reply });
   } catch (err) {
     console.error('Error in /api/chat:', err);

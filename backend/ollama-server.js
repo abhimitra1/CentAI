@@ -1,3 +1,8 @@
+// =====================================================================
+// ⚠️ DEPRECATED: This file is kept for reference only and should not be used.
+// Please use local-dev.js for local development with Ollama instead.
+// =====================================================================
+
 // MongoDB setup
 const mongoose = require('mongoose');
 const User = require('./models/User');
@@ -155,5 +160,10 @@ app.post('/api/chat', withJwt, async (req, res) => {
     res.status(500).json({ error: err.message, details: err });
   }
 }); // <-- This closes the app.post('/api/chat', ...)
+
+// ⚠️ DEPRECATED: This direct server start is not recommended
+console.warn('⚠️  WARNING: ollama-server.js is deprecated.');
+console.warn('⚠️  Please use `npm run dev` or `npm run dev:watch` instead.');
+console.warn('⚠️  See README.md for more information on local development setup.');
 
 app.listen(5001, () => console.log('Backend running on http://localhost:5001'));
