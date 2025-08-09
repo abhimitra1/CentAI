@@ -39,7 +39,7 @@ function App() {
   const handleLogin = () => {
     // Use relative URL in production, fallback to localhost in development
     const authUrl = process.env.NODE_ENV === 'production'
-      ? '/api/auth/google'
+      ? '/api/auth-google'
       : 'http://localhost:5001/auth/google';
     window.location.href = authUrl;
   };

@@ -13,7 +13,7 @@ module.exports = async (req, res) => {
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
   }
-  
+
   if (req.method !== 'GET') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -24,7 +24,7 @@ module.exports = async (req, res) => {
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       return res.status(401).json({ error: 'Unauthorized - No token provided' });
     }
-    
+
     const token = authHeader.split(' ')[1];
     if (!token) {
       return res.status(401).json({ error: 'Unauthorized - Invalid token format' });
@@ -33,17 +33,17 @@ module.exports = async (req, res) => {
     try {
       // Verify the token
       const decoded = jwt.verify(token, process.env.SESSION_SECRET || 'secret');
-      
+
       // Connect to database
       await connectToDatabase();
-      
+
       // Find user in the database
       const user = await User.findOne({ googleId: decoded.googleId });
-      
+
       if (!user) {
         return res.status(404).json({ error: 'User not found' });
       }
-      
+
       // Return user data (without sensitive information)
       return res.status(200).json({
         id: user._id,

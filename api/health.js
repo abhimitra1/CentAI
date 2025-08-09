@@ -11,7 +11,7 @@ module.exports = async (req, res) => {
   }
 
   // Simple health check response
-  return res.status(200).json({ 
+  return res.status(200).json({
     status: 'ok',
     message: 'CentAI API is running',
     timestamp: new Date().toISOString()
