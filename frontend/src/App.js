@@ -70,11 +70,12 @@ function App() {
     }
   }, []);
 
-  const sendMessage = async () => {
-    if (!input.trim()) return;
+  const sendMessage = async (overrideText) => {
+    const text = (overrideText !== undefined && overrideText !== null) ? String(overrideText) : input;
+    if (!text.trim()) return;
     setLoading(true);
-    setMessages(prev => [...prev, { role: 'user', content: input }]);
-    const inputToSend = input;
+    setMessages(prev => [...prev, { role: 'user', content: text }]);
+    const inputToSend = text;
     setInput('');
     try {
       const history = [
@@ -90,6 +91,7 @@ function App() {
       const res = await axios.post(apiUrl, { message: inputToSend, history });
       setWriting(true);
       const reply = ' ' + (res.data.reply || '');
+      const meta = { source: res.data.source, suggestedReplies: res.data.suggestedReplies };
       setWritingText('');
       let i = 0;
       const typeWriter = () => {
@@ -99,10 +101,15 @@ function App() {
           setTimeout(typeWriter, 20);
         } else {
           setWriting(false);
-          setMessages(prev => [...prev, { role: 'assistant', content: reply }]);
+          setMessages(prev => [...prev, { role: 'assistant', content: reply, ...meta }]);
         }
       };
-      if (reply.length > 0) typeWriter();
+      if (reply.length > 0) {
+        typeWriter();
+      } else {
+        setWriting(false);
+        setMessages(prev => [...prev, { role: 'assistant', content: '', ...meta }]);
+      }
     } catch (err) {
       setMessages(prev => [...prev, { role: 'assistant', content: 'Sorry, something went wrong. Please try again.' }]);
       setWriting(false);
@@ -208,6 +215,17 @@ function App() {
                       }} />;
                     }
                   })}
+                  {Array.isArray(msg.suggestedReplies) && msg.suggestedReplies.length > 0 && (
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      {msg.suggestedReplies.map((opt, j) => (
+                        <button
+                          key={j}
+                          onClick={() => sendMessage(opt)}
+                          className="px-3 py-1 rounded-full text-sm bg-[#2c2f36] border border-[#3a3f47] hover:bg-[#353b44]"
+                        >{opt}</button>
+                      ))}
+                    </div>
+                  )}
                 </div>
               ) : (
                 msg.content
@@ -243,7 +261,7 @@ function App() {
               disabled={loading || writing}
             />
             <button
-              onClick={sendMessage}
+              onClick={() => sendMessage()}
               className={`rounded-xl px-4 py-2 transition-colors duration-200 ${
                 loading || writing || !input.trim()
                   ? 'bg-[#23272f] text-gray-400 cursor-not-allowed'

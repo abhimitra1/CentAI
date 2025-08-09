@@ -1,8 +1,8 @@
 {
-  "system_prompt": "You are CentAI, the official Centurion University onboarding assistant. Only answer questions in the context of Centurion University of Technology and Management (CUTM), its departments, teachers, buildings, hostels, clubs, and student life. Do not provide information about other universities or general topics unless they relate to Centurion University. Keep your answers short and crisp. You are created by Abhi Mitra - abhimitra.com",
-  "source_domains": ["https://cutm.ac.in", "https://cutmap.ac.in", "https://faculty.cutm.ac.in/"],
+  "system_prompt": "You are CentAI, the official Centurion University onboarding assistant. Only answer questions in the context of Centurion University of Technology and Management (CUTM), its campus, schools, departments, faculties, buildings, hostels, clubs, research centers, and student life. Do not provide information about other universities or general topics unless they relate to Centurion University. Keep your answers short and crisp. You are created by Abhi Mitra - abhimitra.com",
+  "source_domains": ["https://cutm.ac.in", "https://cutmap.ac.in", "https://faculty.cutm.ac.in"],
   "last_updated_ist": "2025-08-09T20:00:00+05:30",
-
+  "university_promoters": ["Dr. Mukti Kanta Mishra", "Prof. DN Rao"],
   "campuses": [
     {
       "name": "Paralakhemundi",
@@ -207,6 +207,9 @@
   ],
 
   "key_contacts": [
+    { "role": "Promoter/President/Founder", "name": "Prof. Mukti Kanta Mishra", "phone": null, "email": null },
+    { "role": "Promoter/Vice-President/Co-Founder", "name": "Prof. DN Rao", "phone": null, "email": null },
+    { "role": "Vice Chancellor (VC)", "name": "Dr. Supriya Pattanayak", "phone": null, "email": null },
     { "role": "Dean (Exams & Students’ Welfare)", "name": "Dr. Sangram Keshari Swain", "phone": "9937093949" },
     { "role": "Director, Admission", "name": "Mr. Sukanta Parida", "phone": "9650029112" },
     { "role": "GM, Admission & Outreach", "name": "Mr. S. Phalguna Rao", "phone": "9437618312" },
@@ -217,5 +220,161 @@
     { "role": "Chief Warden (Bhubaneswar)", "name": "Mr. Satyajit Sahoo", "phone": "8249411277" },
     { "role": "Transport Supervisor (Bhubaneswar)", "name": "Mr. Mihir Palei", "phone": "6371503377" },
     { "role": "Deputy Security Officer", "name": "Mr. Jayadev Mallick", "phone": "9711958896" }
-  ]
+  ],
+
+  "faculty": [
+    {
+      "name": "Dr. Gurudutta Pattnaik",
+      "role": "Dean & Professor",
+      "school": "School of Pharmacy and Life Sciences",
+      "department": "Pharmacy",
+      "campus": "Bhubaneswar",
+      "email": "gurudutta.pattnaik@cutm.ac.in",
+      "phone": "+91-9437280622",
+      "profile_url": "https://faculty.cutm.ac.in/faculty_pharmacy.php"
+    },
+    {
+      "name": "Dr. Prafulla Kumar Nandi",
+      "role": "Director",
+      "school": "School of Pharmacy and Life Sciences",
+      "department": "Pharmacy",
+      "campus": "Bhubaneswar",
+      "email": "prafulla.nandi@cutm.ac.in",
+      "phone": "+91-9910076720",
+      "profile_url": "https://faculty.cutm.ac.in/faculty_pharmacy.php"
+    },
+    {
+      "name": "Dr. Chandan Kumar Brahma",
+      "role": "Professor",
+      "school": "School of Pharmacy and Life Sciences",
+      "department": "Pharmacy",
+      "campus": "Bhubaneswar",
+      "email": "chandan.brahma@cutm.ac.in",
+      "phone": "+91-7780353734",
+      "profile_url": "https://faculty.cutm.ac.in/faculty_pharmacy.php"
+    },
+    {
+      "name": "Prof. Raj Kumar Mohanta",
+      "role": "Head of Department (HoD)",
+      "school": "School of Engineering and Technology",
+      "department": "Computer Science & Engineering",
+      "campus": "Bhubaneswar",
+      "email": "rajkumar.mohanta@cutm.ac.in",
+      "phone": "+91-7008789363",
+      "profile_url": "https://cutm.ac.in/wp-content/uploads/2024/11/Department-of-Computer-Science-Engineering.pdf"
+    },
+    {
+      "name": "Prof. Debendra Maharana",
+      "role": "Head of Department (HoD)",
+      "school": "School of Engineering and Technology",
+      "department": "Computer Science & Engineering",
+      "campus": "Paralakhemundi",
+      "email": "debendra.maharana@cutm.ac.in",
+      "phone": null,
+      "profile_url": "https://cutm.ac.in/wp-content/uploads/2024/11/Department-of-Computer-Science-Engineering.pdf"
+    },
+    {
+      "name": "Dr. Sunil Kumar Mohapatra",
+      "role": "Assistant Professor",
+      "school": "School of Engineering and Technology",
+      "department": "Computer Science & Engineering",
+      "campus": "Bhubaneswar",
+      "email": "sunil.mohapatra@cutm.ac.in",
+      "phone": null,
+      "profile_url": "https://faculty.cutm.ac.in/general_profile.php?xyz=sunil.mohapatra%40cutm.ac.in"
+    },
+    {
+      "name": "Ms. Arpita Senapati",
+      "role": "Assistant Professor",
+      "school": "School of Engineering and Technology",
+      "department": "Computer Science & Engineering",
+      "campus": "Bhubaneswar",
+      "email": "arpita.senapati@cutm.ac.in",
+      "phone": "+91-8763332694",
+      "profile_url": "https://faculty.cutm.ac.in/general_profile.php?xyz=arpita.senapati%40cutm.ac.in"
+    },
+    {
+      "name": "Mr. Chitta Ranjan Behera",
+      "role": "Assistant Professor",
+      "school": "School of Engineering and Technology",
+      "department": "Computer Science & Engineering",
+      "campus": "Bhubaneswar",
+      "email": "chittaranjan.behera@cutm.ac.in",
+      "phone": "+91-6370024003",
+      "profile_url": "https://faculty.cutm.ac.in/general_profile.php?xyz=chittaranjan.behera%40cutm.ac.in"
+    },
+    {
+      "name": "Dr. Debasish Swapnesh Kumar Nayak",
+      "role": "Assistant Professor",
+      "school": "School of Engineering and Technology",
+      "department": "Computer Science & Engineering",
+      "campus": "Bhubaneswar",
+      "email": "debasish.nayak@cutm.ac.in",
+      "phone": null,
+      "profile_url": "https://faculty.cutm.ac.in/general_profilesc.php?xyz=debasish.nayak%40cutm.ac.in"
+    },
+    {
+      "name": "Dr. Rosy Mallik",
+      "role": "Assistant Professor",
+      "school": "School of Applied Sciences",
+      "department": "Chemistry",
+      "campus": "Bhubaneswar",
+      "email": "rosy.mallik@cutm.ac.in",
+      "phone": "+91-9777011880",
+      "profile_url": "https://faculty.cutm.ac.in/general_profilesc.php?xyz=rosy.mallik%40cutm.ac.in"
+    },
+    {
+      "name": "Dr. Prafulla Kumar Panda",
+      "role": "Associate Professor",
+      "school": "School of Engineering and Technology",
+      "department": "Civil Engineering",
+      "campus": "Bhubaneswar",
+      "email": "prafullapanda@cutm.ac.in",
+      "phone": "+91-9438269572",
+      "profile_url": "https://faculty.cutm.ac.in/general_profilesc.php?xyz=prafullapanda%40cutm.ac.in"
+    },
+    {
+      "name": "Dr. Ajay Kumar Prusty",
+      "role": "Assistant Professor",
+      "school": "M.S. Swaminathan School of Agriculture",
+      "department": "Agricultural Extension & Communication",
+      "campus": "Bhubaneswar",
+      "email": "prusty.ajay@cutm.ac.in",
+      "phone": "+91-8763192349",
+      "profile_url": "https://faculty.cutm.ac.in/general_profilesc.php?xyz=prusty.ajay%40cutm.ac.in"
+    },
+    {
+      "name": "Prof. M. Devender Reddy",
+      "role": "Professor",
+      "school": "M.S. Swaminathan School of Agriculture",
+      "department": "Agronomy",
+      "campus": "Bhubaneswar",
+      "email": null,
+      "phone": null,
+      "profile_url": "https://faculty.cutm.ac.in/faculty_bscag.php"
+    },
+    {
+      "name": "Dr. Sagar Maitra",
+      "role": "Professor & HoD",
+      "school": "M.S. Swaminathan School of Agriculture",
+      "department": "Agronomy",
+      "campus": "Bhubaneswar",
+      "email": null,
+      "phone": null,
+      "profile_url": "https://faculty.cutm.ac.in/faculty_bscag.php"
+    }
+  ],
+  "notes": {
+    "coverage": "This is a partial export assembled from official pages. The full directory is large; use the provided crawler to auto-expand.",
+    "schema": {
+      "name": "Full faculty name",
+      "role": "Designation / administrative role",
+      "school": "School/College",
+      "department": "Department within the school",
+      "campus": "Campus name (e.g., Bhubaneswar, Paralakhemundi)",
+      "email": "Official CUTM email",
+      "phone": "Official phone (if listed)",
+      "profile_url": "Direct URL to the official faculty profile or listing"
+    }
+  }
 }

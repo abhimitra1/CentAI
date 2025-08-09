@@ -23,13 +23,16 @@ const jwt = require('jsonwebtoken');
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-// Load dummy.json data for context
-let dummyData = {};
+// Reuse the same chat handler used in serverless API for deterministic JSON answers
+const chatHandler = require('./api/chat');
+
+// Load half-data.json for context
+let halfData = {};
 try {
-  const dummyPath = path.join(__dirname, 'data', 'dummy.json');
-  dummyData = JSON.parse(fs.readFileSync(dummyPath, 'utf8'));
+  const dataPath = path.join(__dirname, 'data', 'half-data.json');
+  halfData = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
 } catch (err) {
-  console.error('Failed to load dummy.json:', err);
+  console.error('Failed to load half-data.json:', err);
 }
 
 const app = express();
@@ -107,52 +110,8 @@ app.post('/api/chat', withJwt, async (req, res) => {
   if (!req.user) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
-  try {
-    const { message } = req.body;
-    // Build system prompt with dummy.json data
-    let SYSTEM_PROMPT = (dummyData.system_prompt || '') + '\n';
-    SYSTEM_PROMPT += '\nI have details about departments, teachers, buildings, hostels, and clubs at Centurion University. If you would like to know more about any of these, just ask! After answering your question, I will offer to share more details if you are interested.';
-
-    // Add structured info for OpenAI context
-    SYSTEM_PROMPT += '\n\nDepartments:\n';
-    dummyData.departments?.forEach(dep => {
-      SYSTEM_PROMPT += `- ${dep.name} (HOD: ${dep.hod}, Email: ${dep.email}, Phone: ${dep.phone})\n`;
-    });
-    SYSTEM_PROMPT += '\nTeachers:\n';
-    dummyData.teachers?.forEach(teacher => {
-      SYSTEM_PROMPT += `- ${teacher.name} (${teacher.department}, Email: ${teacher.email}, Phone: ${teacher.phone})\n`;
-    });
-    SYSTEM_PROMPT += '\nBuildings:\n';
-    dummyData.buildings?.forEach(bldg => {
-      SYSTEM_PROMPT += `- ${bldg.name} (Location: ${bldg.location}, Departments: ${bldg.departments?.join(', ')})\n`;
-    });
-    SYSTEM_PROMPT += '\nHostels:\n';
-    dummyData.hostels?.forEach(hostel => {
-      SYSTEM_PROMPT += `- ${hostel.name} (Warden: ${hostel.warden}, Phone: ${hostel.phone}, Email: ${hostel.email}, Capacity: ${hostel.capacity})\n`;
-    });
-    SYSTEM_PROMPT += '\nClubs:\n';
-    dummyData.clubs?.forEach(club => {
-      SYSTEM_PROMPT += `- ${club.name} (${club.category}, Coordinator: ${club.faculty_coordinator}, Contact: ${club.contact}, Email: ${club.email})\n`;
-    });
-
-    const messages = [
-      { role: 'system', content: SYSTEM_PROMPT },
-      { role: 'user', content: message }
-    ];
-    const completion = await openai.chat.completions.create({
-      model: 'gpt-3.5-turbo',
-      messages,
-      max_tokens: 1000,
-      temperature: 0.7
-    });
-    let reply = completion.choices[0].message.content;
-  // ...existing code...
-  console.log('OpenAI response:', reply);
-    res.json({ reply });
-  } catch (err) {
-    console.error('Error in /api/chat:', err);
-    res.status(500).json({ error: err.message, details: err });
-  }
+  // Delegate to the unified JSON-driven handler so responses match the smoke test
+  return chatHandler(req, res);
 }); // <-- This closes the app.post('/api/chat', ...)
 
 app.listen(5001, () => console.log('Backend running on http://localhost:5001'));
