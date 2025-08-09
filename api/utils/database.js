@@ -16,7 +16,7 @@ async function connectToDatabase() {
   }
 
   console.log('Creating new database connection');
-  
+
   try {
     // Add connection options to help with Vercel serverless environment
     const connection = await mongoose.connect(mongoUri, {

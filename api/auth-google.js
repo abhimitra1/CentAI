@@ -16,12 +16,12 @@ module.exports = async (req, res) => {
 
   // For now, we'll redirect to Google's OAuth URL with your client ID
   const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
-  
+
   // Get the host from the request headers or fall back to environment variable
   const host = req.headers.host || process.env.VERCEL_URL || 'cent-ai.vercel.app';
   const protocol = host.includes('localhost') ? 'http' : 'https';
   const redirectUri = `${protocol}://${host}/api/auth-google-callback`;
-  
+
   // Log the redirect URI for debugging
   console.log('Redirect URI:', redirectUri);
 

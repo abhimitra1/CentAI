@@ -25,12 +25,12 @@ module.exports = async (req, res) => {
     // Exchange code for tokens
     const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
     const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
-    
+
     // Get the host from the request headers or fall back to environment variable
     const host = req.headers.host || process.env.VERCEL_URL || 'cent-ai.vercel.app';
     const protocol = host.includes('localhost') ? 'http' : 'https';
     const redirectUri = `${protocol}://${host}/api/auth-google-callback`;
-    
+
     // Log the redirect URI for debugging
     console.log('Callback Redirect URI:', redirectUri);
 
@@ -84,9 +84,9 @@ module.exports = async (req, res) => {
       const frontendUrl = process.env.NODE_ENV === 'production'
         ? `${protocol}://${host}`
         : 'http://localhost:3000';
-      
+
       console.log('Frontend redirect URL:', frontendUrl);
-      
+
       res.setHeader('Location', `${frontendUrl}/#token=${token}`);
       return res.status(302).end();
     } catch (dbError) {

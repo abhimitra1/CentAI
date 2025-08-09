@@ -155,4 +155,10 @@ app.post('/api/chat', withJwt, async (req, res) => {
   }
 }); // <-- This closes the app.post('/api/chat', ...)
 
-app.listen(5001, () => console.log('Backend running on http://localhost:5001'));
+// Only start the server if we're not in a serverless environment
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(5001, () => console.log('Backend running on http://localhost:5001'));
+}
+
+// Export the Express app for serverless environments
+module.exports = app;
