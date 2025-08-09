@@ -57,32 +57,44 @@ module.exports = async (req, res) => {
 
     const { sub: googleId, name, email } = userInfoResponse.data;
 
-    // Connect to database
-    await connectToDatabase();
+    try {
+      // Connect to database
+      console.log('Connecting to MongoDB...');
+      await connectToDatabase();
+      console.log('Connected to MongoDB successfully');
 
-    // Find or create user
-    const user = await User.findOneAndUpdate(
-      { googleId },
-      { googleId, name, email },
-      { upsert: true, new: true }
-    );
+      // Find or create user
+      console.log('Finding or creating user for:', email);
+      const user = await User.findOneAndUpdate(
+        { googleId },
+        { googleId, name, email },
+        { upsert: true, new: true }
+      );
+      console.log('User processed successfully');
 
-    // Create JWT token
-    const token = jwt.sign(
-      { userId: user._id, googleId, name, email },
-      process.env.SESSION_SECRET || 'secret',
-      { expiresIn: '7d' }
-    );
+      // Create JWT token
+      const token = jwt.sign(
+        { userId: user._id, googleId, name, email },
+        process.env.SESSION_SECRET || 'secret',
+        { expiresIn: '7d' }
+      );
 
-    // Redirect back to frontend with token
-    // Use the same host for frontend redirect
-    const frontendUrl = process.env.NODE_ENV === 'production'
-      ? `${protocol}://${host}`
-      : 'http://localhost:3000';
-    
-    console.log('Frontend redirect URL:', frontendUrl);
+      // Redirect back to frontend with token
+      // Use the same host for frontend redirect
+      const frontendUrl = process.env.NODE_ENV === 'production'
+        ? `${protocol}://${host}`
+        : 'http://localhost:3000';
+      
+      console.log('Frontend redirect URL:', frontendUrl);
+      
+      res.setHeader('Location', `${frontendUrl}/#token=${token}`);
+      return res.status(302).end();
+    } catch (dbError) {
+      console.error('Database operation failed:', dbError);
+      return res.status(500).json({ error: 'Database operation failed', details: dbError.message });
+    }
 
-    res.setHeader('Location', `${frontendUrl}/#token=${token}`);
+    // This code won't be reached because we return in both success and error cases above
     return res.status(302).end();
   } catch (error) {
     console.error('Google OAuth error:', error);

@@ -5,6 +5,7 @@ let cachedDb = null;
 
 async function connectToDatabase() {
   if (cachedDb) {
+    console.log('Using cached database connection');
     return cachedDb;
   }
 
@@ -14,13 +15,26 @@ async function connectToDatabase() {
     throw new Error('MONGO_URI environment variable not set');
   }
 
-  const connection = await mongoose.connect(mongoUri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
+  console.log('Creating new database connection');
+  
+  try {
+    // Add connection options to help with Vercel serverless environment
+    const connection = await mongoose.connect(mongoUri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      serverSelectionTimeoutMS: 5000, // Timeout after 5s instead of 30s
+      socketTimeoutMS: 45000, // Close sockets after 45s of inactivity
+      maxPoolSize: 10, // Maintain up to 10 socket connections
+      family: 4 // Use IPv4, skip IPv6
+    });
 
-  cachedDb = connection;
-  return connection;
+    console.log('Database connected successfully');
+    cachedDb = connection;
+    return connection;
+  } catch (error) {
+    console.error('MongoDB connection error:', error);
+    throw error;
+  }
 }
 
 module.exports = { connectToDatabase };
