@@ -1,18 +1,10 @@
 
 const OpenAI = require('openai');
-const fs = require('fs');
-const path = require('path');
+// Use require to import dummy.json directly for serverless compatibility
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-// Load dummy data for context
-let dummyData = {};
-try {
-  const dummyPath = path.join(process.cwd(), 'api', 'data', 'dummy.json');
-  dummyData = JSON.parse(fs.readFileSync(dummyPath, 'utf8'));
-} catch (err) {
-  console.error('Failed to load dummy.json:', err);
-}
+const dummyData = require('./data/dummy.json');
 
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Credentials', true);
