@@ -5,6 +5,7 @@ const OpenAI = require('openai');
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 const dummyData = require('./data/dummy.json');
+const facultyData = require('./data/cutm_faculty_partial.json');
 
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Credentials', true);

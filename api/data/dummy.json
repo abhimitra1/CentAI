@@ -1,170 +1,221 @@
 {
   "system_prompt": "You are CentAI, the official Centurion University onboarding assistant. Only answer questions in the context of Centurion University of Technology and Management (CUTM), its departments, teachers, buildings, hostels, clubs, and student life. Do not provide information about other universities or general topics unless they relate to Centurion University. Keep your answers short and crisp. You are created by Abhi Mitra - abhimitra.com",
-  "departments": [
-    {
-      "name": "Computer Science and Engineering",
-      "hod": "Dr. Sashi Bhusan Maharana",
-      "email": "sashi.maharana@cutm.ac.in",
-      "phone": "+91-9800000001"
-    },
-    {
-      "name": "Mechanical Engineering",
-      "hod": "Prof. Sunil Panda",
-      "email": "sunil.panda@cutm.ac.in",
-      "phone": "+91-9800000002"
-    },
-    {
-      "name": "Electronics and Communication Engineering",
-      "hod": "Mr. Rajkumar Mohanta",
-      "email": "rajkumar.mohanta@cutm.ac.in",
-      "phone": "+91-9812340000"
-    },
-    {
-      "name": "Agricultural Sciences",
-      "hod": "Dr. M. Devender Reddy",
-      "email": "devender.reddy@cutm.ac.in",
-      "phone": "+91-9440940950"
-    }
-  ],
+  "source_domains": ["https://cutm.ac.in", "https://cutmap.ac.in", "https://faculty.cutm.ac.in/"],
+  "last_updated_ist": "2025-08-09T20:00:00+05:30",
 
-  "teachers": [
+  "campuses": [
     {
-      "name": "Prof. Debendra Maharana",
-      "department": "Computer Science and Engineering",
-      "email": "debendra.maharana@cutm.ac.in",
-      "phone": "+91-9876123480"
+      "name": "Paralakhemundi",
+      "state": "Odisha",
+      "highlights": ["Main campus", "120+ acres, Eastern Ghats foothills"],
+      "schools": [
+        "School of Engineering and Technology",
+        "School of Management",
+        "M.S Swaminathan School of Agriculture",
+        "School of Agriculture & Bio-Engineering",
+        "School of Fisheries"
+      ],
+      "contacts": []
     },
     {
-      "name": "Dr. Abhijeet Mohanty",
-      "department": "Mechanical Engineering",
-      "email": "abhijeet.mohanty@cutm.ac.in",
-      "phone": "+91-9812345670"
+      "name": "Bhubaneswar",
+      "state": "Odisha",
+      "schools": [
+        "School of Engineering and Technology",
+        "School of Management Studies",
+        "School of Veterinary and Animal Sciences",
+        "School of Vocational Education and Training",
+        "School of Pharmacy & Life Sciences",
+        "School of Paramedics & Allied Health Sciences",
+        "School of Media & Communication",
+        "School of Forensic Sciences"
+      ],
+      "contacts": [
+        {
+          "role": "University HQ Address",
+          "name": "CUTM Jaydev Vihar",
+          "phone": null,
+          "email": null
+        }
+      ]
     },
+    { "name": "Balangir", "state": "Odisha", "schools": [], "contacts": [] },
+    { "name": "Rayagada", "state": "Odisha", "schools": [], "contacts": [] },
+    { "name": "Balasore", "state": "Odisha", "schools": [], "contacts": [] },
+    { "name": "Chatrapur", "state": "Odisha", "schools": [], "contacts": [] },
     {
-      "name": "Ms. Priyanka Mohanty",
-      "department": "Agricultural Sciences",
-      "email": "priyanka.mohanty@cutm.ac.in",
-      "phone": "+91-9090909090"
-    },
-    {
-      "name": "Dr. Rajeev Tripathy",
-      "department": "Electronics and Communication Engineering",
-      "email": "rajeev.tripathy@cutm.ac.in",
-      "phone": "+91-9123456789"
-    }
-  ],
-
-  "buildings": [
-    {
-      "name": "Academic Block A",
-      "location": "Near Main Gate",
-      "departments": ["Computer Science and Engineering", "Mathematics"]
-    },
-    {
-      "name": "Innovation Lab",
-      "location": "Next to Central Library",
-      "departments": ["AI/ML", "Blockchain", "AR-VR"]
-    },
-    {
-      "name": "Mechanical Workshop",
-      "location": "South Campus Zone",
-      "departments": ["Mechanical Engineering"]
+      "name": "Vizianagaram (CUTMAP)",
+      "state": "Andhra Pradesh",
+      "schools": [],
+      "contacts": [
+        {
+          "role": "Campus Address",
+          "name": "Tekkali Village, Nelimarla Mandal, Vizianagaram 535003",
+          "phone": ["+91-9177587867", "+91-9985207475"],
+          "email": null
+        },
+        {
+          "role": "Visakhapatnam Office",
+          "name": "Flat 501, Akruthi Vijayalakshmi Apartments, Gurudwara, Visakhapatnam 530013",
+          "phone": ["+91-9177587867", "+91-9985207475"],
+          "email": null
+        }
+      ]
     }
   ],
 
   "hostels": [
-    {
-      "name": "Bansadhara Boys Hostel",
-      "warden": "Mr. Gajendra Behera",
-      "phone": "+91-9853315791",
-      "email": "bansadhara.hostel@cutm.ac.in",
-      "capacity": 325
-    },
-    {
-      "name": "Devi Girls Hostel",
-      "warden": "Mrs. Pramila Dash",
-      "phone": "+91-8895249796",
-      "email": "devi.hostel@cutm.ac.in",
-      "capacity": 273
-    },
-    {
-      "name": "Mahanadi Boys Hostel",
-      "warden": "Mr. Jagannath Panda",
-      "phone": "+91-9876543211",
-      "email": "mahanadi.hostel@cutm.ac.in",
-      "capacity": 243
-    }
+    { "campus": "Paralakhemundi", "name": "Mahanadi Boys Hostel", "capacity": 243, "type": "Boys" },
+    { "campus": "Paralakhemundi", "name": "Nagavali Boys Hostel", "capacity": 240, "type": "Boys" },
+    { "campus": "Paralakhemundi", "name": "Vansadhara Boys Hostel", "capacity": 138, "type": "Boys" },
+    { "campus": "Paralakhemundi", "name": "Mahendra Tanaya Girls Hostel", "capacity": 276, "type": "Girls" },
+    { "campus": "Paralakhemundi", "name": "Indravati Girls Hostel", "capacity": 240, "type": "Girls" },
+    { "campus": "Paralakhemundi", "name": "Brahmani Girls Hostel", "capacity": 96, "type": "Girls" },
+    { "campus": "Paralakhemundi", "name": "MDC AC Hostel", "capacity": 137, "type": "AC (Mixed/Info Not Specified)" },
+    { "campus": "Paralakhemundi", "name": "Baitarani Boys Hostel", "capacity": 96, "type": "Boys" },
+    { "campus": "Paralakhemundi", "name": "Subarnarekha", "capacity": 264, "type": "Not specified" },
+    { "campus": "Paralakhemundi", "name": "Bhargavi Hostel", "capacity": 240, "type": "Not specified" },
+
+    { "campus": "Bhubaneswar", "name": "Kushabhadra Boys Hostel", "capacity": 220, "type": "Boys" },
+    { "campus": "Bhubaneswar", "name": "Yara Boys Hostel", "capacity": 220, "type": "Boys" },
+    { "campus": "Bhubaneswar", "name": "Bhargavi Boys Hostel", "capacity": 425, "type": "Boys" },
+    { "campus": "Bhubaneswar", "name": "Bansadhara Boys Hostel", "capacity": 325, "type": "Boys" },
+    { "campus": "Bhubaneswar", "name": "Baitarani Boys Hostel", "capacity": 350, "type": "Boys" },
+    { "campus": "Bhubaneswar", "name": "Chitroptala Boys Hostel", "capacity": 350, "type": "Boys" },
+    { "campus": "Bhubaneswar", "name": "Nagabali Boys Hostel", "capacity": 336, "type": "Boys" },
+    { "campus": "Bhubaneswar", "name": "Boys Hostel 08", "capacity": 240, "type": "Boys" },
+    { "campus": "Bhubaneswar", "name": "Sabari Girls Hostel", "capacity": 183, "type": "Girls" },
+    { "campus": "Bhubaneswar", "name": "Prachi Girls Hostel", "capacity": 213, "type": "Girls" },
+    { "campus": "Bhubaneswar", "name": "Daya Girls Hostel", "capacity": 288, "type": "Girls" },
+    { "campus": "Bhubaneswar", "name": "Devi Girls Hostel", "capacity": 273, "type": "Girls" },
+    { "campus": "Bhubaneswar", "name": "Sileru Girls Hostel", "capacity": 400, "type": "Girls" }
   ],
 
   "clubs": [
     {
-      "name": "Science Club",
-      "category": "Technology and Innovation",
-      "faculty_coordinator": "Mr. Arvind Jha",
-      "contact": "+91-9123456780",
-      "email": "scienceclub@cutm.ac.in"
+      "name": "Music Club (RHYTHM)",
+      "category": "Culture",
+      "campus": "Bhubaneswar",
+      "faculty_coordinator": null,
+      "contact": null,
+      "email": null
     },
     {
-      "name": "Kalakruti (Arts Club)",
-      "category": "Arts and Culture",
-      "faculty_coordinator": "Ms. Sneha Bhattacharya",
-      "contact": "+91-9876123488",
-      "email": "kalakruti@cutm.ac.in"
+      "name": "Science Club (ILLUMINATI)",
+      "category": "Science & Technology",
+      "campus": "Bhubaneswar",
+      "faculty_coordinator": null,
+      "contact": null,
+      "email": null
     },
     {
-      "name": "Green Warriors",
-      "category": "Environment & Sustainability",
-      "faculty_coordinator": "Dr. Vikram Singh",
-      "contact": "+91-9810112233",
-      "email": "greenwarriors@cutm.ac.in"
+      "name": "Basketball Club",
+      "category": "Sports",
+      "campus": "Bhubaneswar",
+      "faculty_coordinator": "Debabrata Biswal",
+      "contact": "+91-9777160075",
+      "email": "debabrata.biswal@cutm.ac.in"
     },
-    {
-      "name": "Music Club",
-      "category": "Music & Performing Arts",
-      "faculty_coordinator": "Er. Amit Biswas",
-      "contact": "+91-9347612345",
-      "email": "musicclub@cutm.ac.in"
-    }
+    { "name": "Yoga Club", "category": "Sports", "campus": "Multiple", "faculty_coordinator": null, "contact": null, "email": null },
+    { "name": "Drama Club", "category": "Culture", "campus": "Multiple", "faculty_coordinator": null, "contact": null, "email": null },
+    { "name": "Green Club", "category": "Responsibility & Domain", "campus": "Multiple", "faculty_coordinator": null, "contact": null, "email": null },
+    { "name": "Patho Club", "category": "Responsibility & Domain", "campus": "Bhubaneswar", "faculty_coordinator": null, "contact": null, "email": null }
   ],
 
   "research_centers": [
-    {
-      "name": "Centre for Data Science and Machine Learning",
-      "focus_area": "Artificial Intelligence & Data Analytics"
-    },
-    {
-      "name": "Centre for Renewable Energy and Sustainability",
-      "focus_area": "Clean Energy Solutions and Environmental Research"
-    }
+    "Center for Agriculture Production",
+    "Center for Computational Mathematics",
+    "Center for Aquaculture and Fish Processing Technology",
+    "Center for Bioelectronics and Medical Systems",
+    "Center for Chip Making",
+    "Center for Communication Technologies",
+    "Center for Drug Design",
+    "Center for FinTech",
+    "Center for EduTech & SkillsTech",
+    "Center for Innovation and Entrepreneurship",
+    "Center for Governance and Sustainable Societies",
+    "Center for Manufacturing",
+    "Center for Phytopharma",
+    "Center for New Material Applications",
+    "Center for Medical Diagnostics",
+    "Center for Smart Agriculture",
+    "Center for Waste to Wealth Management",
+    "Center for Digital Manufacturing",
+    "Center for Genetics and Genomics",
+    "Center for LASER",
+    "Center for Smart Mobility and Machines",
+    "Center for Smart Infrastructure",
+    "Center for Smart Engineering Application",
+    "Centre for Space and Earth Sciences"
   ],
 
   "learning_labs": [
-    {
-      "name": "Ashok Leyland Heavy Motor Vehicles Lab",
-      "domain": "Automotive Engineering"
-    },
-    {
-      "name": "Renewable Energy Lab",
-      "domain": "Green Energy Technology"
-    },
-    {
-      "name": "Advanced Material Testing Lab",
-      "domain": "Materials & Calibration Testing"
-    }
+    "Ashok Leyland Heavy Motor Vehicles Lab",
+    "Eicher Heavy Motor Vehicles Lab",
+    "Hyundai Light Commercial Vehicles Lab",
+    "BOSCH & MANATECH Troubleshooting Lab",
+    "BMW Light Passenger Vehicles Lab",
+    "Yamaha Light Vehicles with Gears Lab",
+    "Godrej Industrial Material Handling Lab",
+    "Renewable Energy Lab (Schneider)",
+    "High-End Automation Lab (OPTCL & FESTO)",
+    "Advanced Material Testing and Calibration Lab",
+    "Scanning Electron Microscopy & CMM",
+    "Surveying Lab (ONGC)",
+    "HPCL Optometry & Ophthalmology Lab",
+    "Central Lab (Paramedics)",
+    "Operation Theatre Lab",
+    "Physiotherapy Lab",
+    "Radiology & Imaging Lab",
+    "Cardiac Care Lab",
+    "Dialysis Lab",
+    "Emergency Medicine Technology Lab",
+    "ICU Lab",
+    "Food Processing Lab",
+    "Protected Cultivation (Green House)",
+    "Soil Testing Lab",
+    "Farm Machinery Lab",
+    "Aquaculture Lab",
+    "Aquatic Animal Health Management Lab",
+    "Fish Processing Lab",
+    "Fisheries Navigation & Engineering Lab",
+    "Pharmaceutics Lab",
+    "Instrumentation Analysis Lab",
+    "Tablet Compression Lab",
+    "Friability Test Apparatus",
+    "Disintegration Tester",
+    "Polyhouse Automation for Agriculture (IoT)",
+    "Media Resources Lab",
+    "Fused Deposition Modelling (AMS India)",
+    "Augmented & Virtual Reality Lab"
   ],
 
-  "production_labs": [
-    {
-      "name": "Waste to Wealth Production Unit",
-      "focus": "Recycling & Waste Management"
-    },
-    {
-      "name": "Electric Vehicle Manufacturing Unit",
-      "focus": "Electric Mobility Production"
-    },
-    {
-      "name": "Apparel Manufacturing Unit",
-      "focus": "Textile and Garment Production"
-    }
+  "production_units": [
+    "Waste to Wealth Production Unit",
+    "Apparel Manufacturing Unit",
+    "Wood Engineering Production Centre",
+    "Paper Production Unit",
+    "Chalk Production Unit",
+    "Ceramics Pottery Production Unit",
+    "Pavers Manufacturing Unit",
+    "Electric Vehicle Manufacturing Unit",
+    "Workshop & Mini Tool Room (CNC/Machining)",
+    "Transformers Manufacturing Unit",
+    "Biofertilizer Production Unit",
+    "Centurion Coffee Connect",
+    "Centurion Ayurveda Wellness Centre"
+  ],
+
+  "key_contacts": [
+    { "role": "Dean (Exams & Students’ Welfare)", "name": "Dr. Sangram Keshari Swain", "phone": "9937093949" },
+    { "role": "Director, Admission", "name": "Mr. Sukanta Parida", "phone": "9650029112" },
+    { "role": "GM, Admission & Outreach", "name": "Mr. S. Phalguna Rao", "phone": "9437618312" },
+    { "role": "Director Administration (Paralakhemundi)", "name": "Dr. Durga Prasad Padhi", "phone": "9437618075" },
+    { "role": "Sr. Manager (HR & Admin), Bhubaneswar", "name": "Mr. Chitta Ranjan Pattanayak", "phone": "9437269575" },
+    { "role": "Director Sports", "name": "Mr. Rabi Narayan Routray", "phone": "9437214867" },
+    { "role": "Manager Estate", "name": "Mr. Jogesh Chandra Mishra", "phone": "7008375748" },
+    { "role": "Chief Warden (Bhubaneswar)", "name": "Mr. Satyajit Sahoo", "phone": "8249411277" },
+    { "role": "Transport Supervisor (Bhubaneswar)", "name": "Mr. Mihir Palei", "phone": "6371503377" },
+    { "role": "Deputy Security Officer", "name": "Mr. Jayadev Mallick", "phone": "9711958896" }
   ]
 }
