@@ -1,0 +1,52 @@
+/* ChatWindow.css */
+
+.formatted-content h3 {
+  font-weight: 700;
+  font-size: 1.25rem;
+  margin-top: 0.75rem;
+  margin-bottom: 0.5rem;
+  color: #fff;
+}
+
+.formatted-content p {
+  margin-bottom: 0.75rem;
+}
+
+.formatted-content p:last-child {
+  margin-bottom: 0;
+}
+
+.formatted-content strong {
+  font-weight: 700;
+  color: #fff;
+}
+
+/* List styling */
+.formatted-content p[class*="ml-4"] {
+  position: relative;
+  padding-left: 0.5rem;
+}
+
+/* Add extra space between sections */
+.formatted-content h3 + p {
+  margin-top: 0.5rem;
+}
+
+/* Scrollbar styling */
+.overflow-y-auto::-webkit-scrollbar {
+  width: 6px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
