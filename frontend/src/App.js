@@ -146,7 +146,7 @@ function App() {
               </div>
             </div>
           )}
-          <div ref={chatWindowRef} className="flex flex-col gap-8 flex-grow overflow-y-auto px-4 md:px-10 pb-6" style={{ height: 'calc(100vh - 120px - 90px)' }}>
+          <div ref={chatWindowRef} className="flex flex-col justify-end gap-8 flex-grow overflow-y-auto px-4 md:px-10 pb-6" style={{ height: 'calc(100vh - 120px - 90px)' }}>
             {messages.map((msg, idx) => (
               <div key={idx} className={msg.role === 'user' ? 'flex justify-end mb-3' : 'flex justify-start mb-3'}>
                 <div className={msg.role === 'user'
