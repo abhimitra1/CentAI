@@ -58,7 +58,10 @@ function App() {
         : 'http://localhost:5001/api/user';
       const res = await axios.get(apiUrl);
       setUser(res.data);
-    } catch {
+      console.log('User fetched successfully');
+    } catch (error) {
+      console.log('Error fetching user:', error.message);
+      // Silently handle 401 and 404 errors - just means the user is not logged in
       setUser(null);
     }
   }, []);
