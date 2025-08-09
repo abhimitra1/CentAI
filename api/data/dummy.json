@@ -1,0 +1,170 @@
+{
+  "system_prompt": "You are CentAI, the official Centurion University onboarding assistant. Only answer questions in the context of Centurion University of Technology and Management (CUTM), its departments, teachers, buildings, hostels, clubs, and student life. Do not provide information about other universities or general topics unless they relate to Centurion University. Keep your answers short and crisp. You are created by Abhi Mitra - abhimitra.com",
+  "departments": [
+    {
+      "name": "Computer Science and Engineering",
+      "hod": "Dr. Sashi Bhusan Maharana",
+      "email": "sashi.maharana@cutm.ac.in",
+      "phone": "+91-9800000001"
+    },
+    {
+      "name": "Mechanical Engineering",
+      "hod": "Prof. Sunil Panda",
+      "email": "sunil.panda@cutm.ac.in",
+      "phone": "+91-9800000002"
+    },
+    {
+      "name": "Electronics and Communication Engineering",
+      "hod": "Mr. Rajkumar Mohanta",
+      "email": "rajkumar.mohanta@cutm.ac.in",
+      "phone": "+91-9812340000"
+    },
+    {
+      "name": "Agricultural Sciences",
+      "hod": "Dr. M. Devender Reddy",
+      "email": "devender.reddy@cutm.ac.in",
+      "phone": "+91-9440940950"
+    }
+  ],
+
+  "teachers": [
+    {
+      "name": "Prof. Debendra Maharana",
+      "department": "Computer Science and Engineering",
+      "email": "debendra.maharana@cutm.ac.in",
+      "phone": "+91-9876123480"
+    },
+    {
+      "name": "Dr. Abhijeet Mohanty",
+      "department": "Mechanical Engineering",
+      "email": "abhijeet.mohanty@cutm.ac.in",
+      "phone": "+91-9812345670"
+    },
+    {
+      "name": "Ms. Priyanka Mohanty",
+      "department": "Agricultural Sciences",
+      "email": "priyanka.mohanty@cutm.ac.in",
+      "phone": "+91-9090909090"
+    },
+    {
+      "name": "Dr. Rajeev Tripathy",
+      "department": "Electronics and Communication Engineering",
+      "email": "rajeev.tripathy@cutm.ac.in",
+      "phone": "+91-9123456789"
+    }
+  ],
+
+  "buildings": [
+    {
+      "name": "Academic Block A",
+      "location": "Near Main Gate",
+      "departments": ["Computer Science and Engineering", "Mathematics"]
+    },
+    {
+      "name": "Innovation Lab",
+      "location": "Next to Central Library",
+      "departments": ["AI/ML", "Blockchain", "AR-VR"]
+    },
+    {
+      "name": "Mechanical Workshop",
+      "location": "South Campus Zone",
+      "departments": ["Mechanical Engineering"]
+    }
+  ],
+
+  "hostels": [
+    {
+      "name": "Bansadhara Boys Hostel",
+      "warden": "Mr. Gajendra Behera",
+      "phone": "+91-9853315791",
+      "email": "bansadhara.hostel@cutm.ac.in",
+      "capacity": 325
+    },
+    {
+      "name": "Devi Girls Hostel",
+      "warden": "Mrs. Pramila Dash",
+      "phone": "+91-8895249796",
+      "email": "devi.hostel@cutm.ac.in",
+      "capacity": 273
+    },
+    {
+      "name": "Mahanadi Boys Hostel",
+      "warden": "Mr. Jagannath Panda",
+      "phone": "+91-9876543211",
+      "email": "mahanadi.hostel@cutm.ac.in",
+      "capacity": 243
+    }
+  ],
+
+  "clubs": [
+    {
+      "name": "Science Club",
+      "category": "Technology and Innovation",
+      "faculty_coordinator": "Mr. Arvind Jha",
+      "contact": "+91-9123456780",
+      "email": "scienceclub@cutm.ac.in"
+    },
+    {
+      "name": "Kalakruti (Arts Club)",
+      "category": "Arts and Culture",
+      "faculty_coordinator": "Ms. Sneha Bhattacharya",
+      "contact": "+91-9876123488",
+      "email": "kalakruti@cutm.ac.in"
+    },
+    {
+      "name": "Green Warriors",
+      "category": "Environment & Sustainability",
+      "faculty_coordinator": "Dr. Vikram Singh",
+      "contact": "+91-9810112233",
+      "email": "greenwarriors@cutm.ac.in"
+    },
+    {
+      "name": "Music Club",
+      "category": "Music & Performing Arts",
+      "faculty_coordinator": "Er. Amit Biswas",
+      "contact": "+91-9347612345",
+      "email": "musicclub@cutm.ac.in"
+    }
+  ],
+
+  "research_centers": [
+    {
+      "name": "Centre for Data Science and Machine Learning",
+      "focus_area": "Artificial Intelligence & Data Analytics"
+    },
+    {
+      "name": "Centre for Renewable Energy and Sustainability",
+      "focus_area": "Clean Energy Solutions and Environmental Research"
+    }
+  ],
+
+  "learning_labs": [
+    {
+      "name": "Ashok Leyland Heavy Motor Vehicles Lab",
+      "domain": "Automotive Engineering"
+    },
+    {
+      "name": "Renewable Energy Lab",
+      "domain": "Green Energy Technology"
+    },
+    {
+      "name": "Advanced Material Testing Lab",
+      "domain": "Materials & Calibration Testing"
+    }
+  ],
+
+  "production_labs": [
+    {
+      "name": "Waste to Wealth Production Unit",
+      "focus": "Recycling & Waste Management"
+    },
+    {
+      "name": "Electric Vehicle Manufacturing Unit",
+      "focus": "Electric Mobility Production"
+    },
+    {
+      "name": "Apparel Manufacturing Unit",
+      "focus": "Textile and Garment Production"
+    }
+  ]
+}

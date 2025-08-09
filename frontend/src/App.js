@@ -72,7 +72,11 @@ function App() {
         { role: 'user', content: inputToSend }
       ];
       setAxiosAuth();
-      const res = await axios.post('http://localhost:5001/api/chat', { message: inputToSend, history });
+      // Use relative URL in production, fallback to localhost in development
+      const apiUrl = process.env.NODE_ENV === 'production'
+        ? '/api/chat'
+        : 'http://localhost:5001/api/chat';
+      const res = await axios.post(apiUrl, { message: inputToSend, history });
       setWriting(true);
       const reply = ' ' + (res.data.reply || '');
       setWritingText('');
