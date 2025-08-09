@@ -53,7 +53,7 @@ function App() {
     try {
       setAxiosAuth();
       // Use relative URL in production, fallback to localhost in development
-      const apiUrl = process.env.NODE_ENV === 'production' 
+      const apiUrl = process.env.NODE_ENV === 'production'
         ? '/api/user'
         : 'http://localhost:5001/api/user';
       const res = await axios.get(apiUrl);
