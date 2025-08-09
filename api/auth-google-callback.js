@@ -25,7 +25,14 @@ module.exports = async (req, res) => {
     // Exchange code for tokens
     const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
     const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
-    const redirectUri = `https://${process.env.VERCEL_URL || 'cent-ai.vercel.app'}/api/auth-google-callback`;
+    
+    // Get the host from the request headers or fall back to environment variable
+    const host = req.headers.host || process.env.VERCEL_URL || 'cent-ai.vercel.app';
+    const protocol = host.includes('localhost') ? 'http' : 'https';
+    const redirectUri = `${protocol}://${host}/api/auth-google-callback`;
+    
+    // Log the redirect URI for debugging
+    console.log('Callback Redirect URI:', redirectUri);
 
     if (!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET) {
       return res.status(500).json({ error: 'Google OAuth credentials not configured' });
@@ -68,9 +75,12 @@ module.exports = async (req, res) => {
     );
 
     // Redirect back to frontend with token
+    // Use the same host for frontend redirect
     const frontendUrl = process.env.NODE_ENV === 'production'
-      ? `https://${process.env.VERCEL_URL || 'cent-ai.vercel.app'}`
+      ? `${protocol}://${host}`
       : 'http://localhost:3000';
+    
+    console.log('Frontend redirect URL:', frontendUrl);
 
     res.setHeader('Location', `${frontendUrl}/#token=${token}`);
     return res.status(302).end();
