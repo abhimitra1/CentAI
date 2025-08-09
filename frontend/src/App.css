@@ -54,7 +54,7 @@
   align-items: center;
   justify-content: center;
   padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
-  font-size: clamp(16px, 4vw, 24px);
+  font-size: clamp(15px, 3vw, 20px);
   color: white;
   position: relative;
   width: 100%;
@@ -95,36 +95,37 @@
 /* Mobile-specific optimizations */
 @media screen and (max-width: 768px) {
   .App-header {
-    padding: 2rem 1rem;
-    padding-top: max(2rem, env(safe-area-inset-top));
-    padding-bottom: max(2rem, env(safe-area-inset-bottom));
+    padding: 1.2rem 0.5rem;
+    padding-top: max(1.2rem, env(safe-area-inset-top));
+    padding-bottom: max(1.2rem, env(safe-area-inset-bottom));
+    font-size: clamp(13px, 2.5vw, 16px);
   }
 
   .App-logo {
-    height: 20vmin;
-    max-height: 100px;
-    max-width: 100px;
+    height: 16vmin;
+    max-height: 70px;
+    max-width: 70px;
   }
 
   .App-link {
-    font-size: 16px;
-    min-height: 44px; /* Apple's recommended touch target size */
-    padding: 0.75rem 1.25rem;
-    margin: 0.75rem 0.5rem;
+    font-size: 14px;
+    min-height: 38px;
+    padding: 0.5rem 1rem;
+    margin: 0.5rem 0.3rem;
   }
 }
 
 /* Extra small screens */
 @media screen and (max-width: 480px) {
   .App-header {
-    font-size: clamp(14px, 3.5vw, 18px);
-    padding: 1.5rem 1rem;
+    font-size: clamp(12px, 2vw, 15px);
+    padding: 0.8rem 0.5rem;
   }
 
   .App-logo {
-    height: 18vmin;
-    max-height: 80px;
-    max-width: 80px;
+    height: 12vmin;
+    max-height: 50px;
+    max-width: 50px;
   }
 }
 
